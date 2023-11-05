@@ -3,16 +3,19 @@
 /*
  *main - Entry point to the shell
  *
+ *
  *Return 0 if no error
  */
 
-int main(void)
+int main()
 {
 	extern char **environ;
 	int read, status;
 	size_t n = 0;
+	size_t size=1;
 	char *buf = NULL;
-	char *argv[2];
+	char *line=NULL;
+	char **argv=(char**)malloc(sizeof(char*));
 	pid_t child_pid;
 
 	while (1)
@@ -26,8 +29,17 @@ int main(void)
 		}
 		else if (read > 1)
 		{
-			argv[0] = strtok(buf, "\n");
-			argv[1] = NULL;
+			argv[0]=strdup(strtok(buf, " "));
+			while(buf != NULL)
+			{	
+				argv=(char**)realloc(argv,(size+1)*sizeof(char*));
+				line= strtok(NULL, " \n");
+
+				argv[size]=strdup(line);
+				size++;
+			}
+			argv[size]=NULL;
+
 			child_pid = fork();
 			if (child_pid == -1)
 			{

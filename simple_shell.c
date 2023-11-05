@@ -1,5 +1,10 @@
 #include "main.h"
 
+/**
+ * main - Entry for simple_shell
+ * 
+ * @return int 
+ */
 int main(void)
 {
 	extern char **environ;

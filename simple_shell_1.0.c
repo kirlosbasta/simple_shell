@@ -32,11 +32,14 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 		argv = create_list_of_arg(buf);
 		child_pid = fork();
 		if (child_pid == -1)
-		{
 			perror("Fork Error\n");
-		}
 		if (child_pid == 0)
 		{
+			if (_strcmp("env", argv[0]) == 0)
+			{
+				printenv(environ);
+				return (0);
+			}
 			if (execve(argv[0], argv, environ) == -1)
 			{
 				execve_error(av, argv, buf);

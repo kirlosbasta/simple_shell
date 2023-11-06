@@ -40,3 +40,21 @@ int _strcmp(char *s1, char *s2)
 	diff = s1[i] - s2[i];
 	return (diff);
 }
+
+/**
+ * printenv - print Enviromnetal variables
+ * @env: Enviromental variables
+ *
+ * Return: Nothing
+ */
+
+void printenv(char **env)
+{
+	int i;
+
+	for (i = 0; env[i] != NULL; i++)
+	{
+		write(STDOUT_FILENO, env[i], _strlen(env[i]));
+		write(STDOUT_FILENO, "\n", 2);
+	}
+}

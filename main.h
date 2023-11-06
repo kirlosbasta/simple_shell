@@ -19,5 +19,6 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 void free_list(char **argv);
 void execve_error(char **av, char **argv, char *buf);
 int _strcmp(char *s1, char *s2);
+void printenv(char **env);
 
 #endif

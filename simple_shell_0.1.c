@@ -1,9 +1,9 @@
 #include "main.h"
 
 /*
- *main - Entry point to the shell
+ * main - Entry point to the shell
  *
- *Return 0 if no error
+ * Return 0 if no error
  */
 
 int main(void)

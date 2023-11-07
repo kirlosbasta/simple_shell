@@ -20,14 +20,15 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 	while (1)
 	{
 		argv = NULL;
-		write(STDOUT_FILENO, "$ ", 3);
+		if (isatty(0))
+			write(STDOUT_FILENO, "$ ", 3);
 		read = getline(&buf, &n, stdin);
 		if (read == -1 || (_strcmp("exit\n", buf) == 0))
 		{
 			free(buf);
-			if (read == -1)
+			if (read == -1 && isatty(0))
 				write(STDOUT_FILENO, "\n", 2);
-			return (0);
+			exit(0);
 		}
 		argv = create_list_of_arg(buf);
 		child_pid = fork();

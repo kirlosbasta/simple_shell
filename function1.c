@@ -82,6 +82,7 @@ char **create_list_of_arg(char *buf)
 	}
 	return (argv);
 }
+
 /**
  * _realloc - reallocates a memory block
  * @ptr: pointer to the old memory

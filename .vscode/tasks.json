@@ -14,7 +14,7 @@
 				"-std=gnu89",
                 "*.c",
                 "-o",
-                "hsh"
+                "${fileDirname}/hsh"
             ],
             "options": {
                 "cwd": "${fileDirname}"

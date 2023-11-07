@@ -20,22 +20,27 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 	while (1)
 	{
 		argv = NULL;
-		write(STDOUT_FILENO, "$ ", 3);
+		if (isatty(0))
+			write(STDOUT_FILENO, "$ ", 3);
 		read = getline(&buf, &n, stdin);
-		if (read == -1)
+		if (read == -1 || (_strcmp("exit\n", buf) == 0))
 		{
 			free(buf);
-			write(STDOUT_FILENO, "\n", 2);
-			return (0);
+			if (read == -1 && isatty(0))
+				write(STDOUT_FILENO, "\n", 2);
+			exit(0);
 		}
 		argv = create_list_of_arg(buf);
 		child_pid = fork();
 		if (child_pid == -1)
-		{
 			perror("Fork Error\n");
-		}
 		if (child_pid == 0)
 		{
+			if (_strcmp("env", argv[0]) == 0)
+			{
+				printenv(environ);
+				return (0);
+			}
 			if (execve(argv[0], argv, environ) == -1)
 			{
 				execve_error(av, argv, buf);

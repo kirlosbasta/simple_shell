@@ -82,6 +82,7 @@ char **create_list_of_arg(char *buf)
 	}
 	return (argv);
 }
+
 /**
  * _realloc - reallocates a memory block
  * @ptr: pointer to the old memory
@@ -126,6 +127,7 @@ void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size)
  * @dest: pointer to the destination pointer
  * @src: pointer to sourc pointer
  * @n: The size of bytes to copy from src
+ *
  * Return: pointer to dest
  */
 

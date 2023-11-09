@@ -20,5 +20,6 @@ void free_list(char **argv);
 void execve_error(char **av, char **argv, char *buf);
 int _strcmp(char *s1, char *s2);
 void printenv(char **env);
+ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 
 #endif

@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <errno.h>
@@ -22,5 +23,7 @@ char *_strdup(char *str);
 void printenv(char **env);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 char *_strtok(char *str, const char *delim);
+int _atoi(char *s);
+void exit_shell(char **argv, char *buf);
 
 #endif

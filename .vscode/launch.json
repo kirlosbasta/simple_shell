@@ -9,7 +9,7 @@
       "stopAtEntry": true,
       "externalConsole": false,
       "cwd": "/home/koko/KOKO/ALX/simple_shell",
-      "program": "/home/koko/KOKO/ALX/simple_shell/hsh",
+      "program": "${fileDirname}/hsh",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

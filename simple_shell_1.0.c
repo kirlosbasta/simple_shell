@@ -23,7 +23,7 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 		if (isatty(0))
 			write(STDOUT_FILENO, "$ ", 3);
 		read = _getline(&buf, &n, stdin);
-		if (read == -1 || (_strcmp("exit\n", buf) == 0))
+		if (read == -1)
 		{
 			free(buf);
 			if (read == -1 && isatty(0))
@@ -31,6 +31,10 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 			exit(0);
 		}
 		argv = create_list_of_arg(buf);
+		if (_strcmp("exit", argv[0]) == 0)
+		{
+			exit_shell(argv, buf);
+		}
 		child_pid = fork();
 		if (child_pid == -1)
 			perror("Fork Error\n");

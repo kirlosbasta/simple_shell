@@ -63,7 +63,7 @@ char **create_list_of_arg(char *buf)
 		return (NULL);
 	}
 	i = 0;
-	argv[i] = strtok(buf, " ");
+	argv[i] = _strtok(buf, " ");
 	while (argv[i] != NULL)
 	{
 		if (count > 9)
@@ -73,11 +73,11 @@ char **create_list_of_arg(char *buf)
 		}
 		if (new_line_check(argv[i]) == 1)
 		{
-			argv[i] = strtok(argv[i], "\n");
+			argv[i] = _strtok(argv[i], "\n");
 
 		}
 		i++;
-		argv[i] = strtok(NULL, " ");
+		argv[i] = _strtok(NULL, " ");
 		count++;
 	}
 	return (argv);

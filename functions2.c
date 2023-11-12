@@ -9,14 +9,14 @@
  * Return: Nothing
  */
 
-void execve_error(char **av, char **argv, char *buf)
+void execve_error(char **av, char **argv, UNUSED char *buf)
 {
 	write(STDERR_FILENO, av[0], _strlen(av[0]));
 	write(STDERR_FILENO, ": ", 3);
 	write(STDERR_FILENO, argv[0], _strlen(argv[0]));
 	perror(" ");
-	free(buf);
 	free(argv);
+	argv = NULL;
 }
 
 /**
@@ -105,7 +105,6 @@ char *_strdup(char *str)
 
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 {
-#define BUF_SIZE 1024
 	int b_read, b_read_tmp = 0, fd;
 	ssize_t bytes = 0;
 

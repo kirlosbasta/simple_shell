@@ -2,6 +2,7 @@
 #define MAIN_H
 
 #define UNUSED __attribute__((unused))
+#define BUF_SIZE 1024
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,6 +16,7 @@
  * @str: pointer to char
  * @next: pointer to next node
  */
+
 typedef struct list_t
 {
 	char *str;

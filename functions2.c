@@ -105,7 +105,6 @@ char *_strdup(char *str)
 
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream)
 {
-#define BUF_SIZE 1024
 	int b_read, b_read_tmp = 0, fd;
 	ssize_t bytes = 0;
 

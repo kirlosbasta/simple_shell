@@ -20,23 +20,24 @@ int _strlen(char *s)
 }
 
 /**
- * new_line_check -  check if a string conatin new line
+ * check_delim -  check if a string conatin delim
  * @s: pointer to string
+ * @delim: pointer to the character to search for
  *
  * Return: 1 if it contain new line and 0 if it doesn't
  */
 
-int new_line_check(char *s)
+int check_delim(char *s, char *delim)
 {
 	int i;
 
-	if (s == NULL)
+	if (s == NULL || delim == NULL)
 	{
 		return (0);
 	}
 	for (i = 0; s[i] != '\0'; i++)
 	{
-		if (s[i] == '\n')
+		if (s[i] == *delim)
 		{
 			return (1);
 		}
@@ -71,7 +72,7 @@ char **create_list_of_arg(char *buf)
 			argv = _realloc(argv, basic, sizeof(char *) * (10 + j));
 			j++;
 		}
-		if (new_line_check(argv[i]) == 1)
+		if (check_delim(argv[i], "\n") == 1)
 		{
 			argv[i] = _strtok(argv[i], "\n");
 

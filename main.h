@@ -10,6 +10,17 @@
 #include <sys/wait.h>
 #include <errno.h>
 
+/**
+ * struct list_t - Nodes for a singly linked list
+ * @str: pointer to char
+ * @next: pointer to next node
+ */
+typedef struct list_t
+{
+	char *str;
+	struct list_t *next;
+} list_t;
+
 int _strlen(char *s);
 int check_delim(char *s, char *delim);
 char **create_list_of_arg(char *buf);
@@ -33,5 +44,9 @@ char **var_name_check(char *name, char **environ);
 int name_value_check(char *name, char *value);
 int check_builtin(char **argv,  char *buf, char *env_var,
 					char **environ, int read);
+char *command_exist(char *name, char **environ);
+list_t *add_node_end(list_t **head, const char *str);
+list_t *path_linked_list(char *path);
+char *_getenv(const char *name, char **environ);
 
 #endif

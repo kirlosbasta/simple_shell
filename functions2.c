@@ -9,14 +9,14 @@
  * Return: Nothing
  */
 
-void execve_error(char **av, char **argv, char *buf)
+void execve_error(char **av, char **argv, UNUSED char *buf)
 {
 	write(STDERR_FILENO, av[0], _strlen(av[0]));
 	write(STDERR_FILENO, ": ", 3);
 	write(STDERR_FILENO, argv[0], _strlen(argv[0]));
 	perror(" ");
-	free(buf);
 	free(argv);
+	argv = NULL;
 }
 
 /**

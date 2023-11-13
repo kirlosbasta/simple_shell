@@ -139,26 +139,29 @@ int name_value_check(char *name, char *value)
  * Return: 1 if it's builtin and 0 if not
  */
 
-int check_builtin(char **argv,  char *buf, char *env_var,
+int check_builtin(char **argv,  char *buf, char **env_var,
 					char **environ, int read)
 {
 	if (_strcmp("exit", argv[0]) == 0)
 	{
-		exit_shell(argv, buf, env_var, read);
+		exit_shell(argv, buf, *env_var, read);
 	}
 	if (_strcmp("setenv", argv[0]) == 0)
 	{
-		env_var = _setenv(argv[1], argv[2], 1, environ);
+		*env_var = _setenv(argv[1], argv[2], 1, environ);
+		free(argv);
 		return (1);
 	}
 	if (_strcmp("unsetenv", argv[0]) == 0)
 	{
 		_unsetenv(argv[1], environ);
+		free(argv);
 		return (1);
 	}
 	if (_strcmp("env", argv[0]) == 0)
 	{
 		printenv(environ);
+		free(argv);
 		return (1);
 	}
 	return (0);

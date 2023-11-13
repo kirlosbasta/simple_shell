@@ -63,8 +63,8 @@ void exit_shell(char **argv, char *buf, char *env_var, int read)
 		free(argv);
 		exit(status);
 	}
-	free(buf);
 	free(argv);
+	free(buf);
 	exit(0);
 }
 
@@ -119,23 +119,17 @@ int _atoi(char *s)
 char *_setenv(const char *name, const char *value, int overwrite,
 			char **environ)
 {
-	char *new_var;
-	int name_len, value_len, i, j;
+	char *new_var, *tmp;
+	int i, j;
 
-	if (name_value_check((char *)name, (char *)value))
-		return (NULL);
-	name_len = _strlen((char *)name);
-	value_len = _strlen((char *) value);
-	new_var = malloc(sizeof(char) * (name_len + value_len + 2));
+	new_var = _setenv_helper((char *) name, (char *) value);
 	if (new_var == NULL)
-	{
-		perror("malloc");
 		return (NULL);
-	}
 	new_var = _strcpy(new_var, (char *) name);
-	/*remember to free malloc inside str_concat*/
-	new_var = str_concat(new_var, "=");
-	new_var = str_concat(new_var, (char *) value);
+	tmp = str_concat(new_var, "=");
+	free(new_var);
+	new_var = str_concat(tmp, (char *) value);
+	free(tmp);
 	for (i = 0; environ[i] != NULL; i++)
 	{
 		for (j = 0; new_var[j] != '='; j++)

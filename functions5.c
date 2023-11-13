@@ -116,7 +116,9 @@ char *command_exist(char *name, char **environ)
 
 	if (access(name, X_OK) == 0)
 	{
-		return (name);
+		free_single_list(head);
+		dir = _strdup(name);
+		return (dir);
 	}
 	while (current != NULL)
 	{
@@ -125,10 +127,33 @@ char *command_exist(char *name, char **environ)
 		free(tmp);
 		if (access(dir, X_OK) == 0)
 		{
+			free_single_list(head);
 			return (dir);
 		}
 		free(dir);
 		current = current->next;
 	}
+	free_single_list(head);
 	return (NULL);
+}
+
+/**
+ * free_single_list - free a single linked list
+ * @head: head of the list
+ *
+ * Return: Nothing
+ */
+
+void free_single_list(list_t *head)
+{
+	list_t *tmp;
+
+	while (head != NULL)
+	{
+		free(head->str);
+		tmp = head;
+		head = head->next;
+		free(tmp);
+	}
+	free(head);
 }

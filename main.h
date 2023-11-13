@@ -29,7 +29,7 @@ char **create_list_of_arg(char *buf);
 void *_memcpy(char *dest, char *src, unsigned int n);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 void free_list(char **argv);
-void execve_error(char **av, char **argv, char *buf);
+void execve_error(char **av, char **argv, char *buf, char *dir);
 int _strcmp(char *s1, char *s2);
 char *_strdup(char *str);
 char *_strcpy(char *dest, char *src);
@@ -44,11 +44,15 @@ int _atoi(char *s);
 void exit_shell(char **argv, char *buf, char *env_var, int read);
 char **var_name_check(char *name, char **environ);
 int name_value_check(char *name, char *value);
-int check_builtin(char **argv,  char *buf, char *env_var,
+int check_builtin(char **argv,  char *buf, char **env_var,
 					char **environ, int read);
+int fork_child(char *dir, char **argv, char **environ, char **av,
+				char *buf);
 char *command_exist(char *name, char **environ);
 list_t *add_node_end(list_t **head, const char *str);
 list_t *path_linked_list(char *path);
 char *_getenv(const char *name, char **environ);
+void free_single_list(list_t *head);
+char *_setenv_helper(char *name, char *value);
 
 #endif

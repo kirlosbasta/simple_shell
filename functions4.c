@@ -143,6 +143,11 @@ int name_value_check(char *name, char *value)
 int check_builtin(char **argv,  char *buf, list_t **head,
 					char **environ, int read, char **av)
 {
+	if (*argv == NULL)
+	{
+		free(argv);
+		return (1);
+	}
 	if (_strcmp("exit", argv[0]) == 0)
 	{
 		exit_shell(argv, buf, head, read);

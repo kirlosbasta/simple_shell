@@ -27,6 +27,7 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 		if (read > 1)
 		{
 			argv = create_list_of_arg(buf);
+			check_comment(argv);
 			if (check_builtin(argv, buf, &head, environ, read, av))
 				continue;
 			dir = command_exist(argv[0], environ);

@@ -23,16 +23,19 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 		read = _getline(&buf, &n, stdin);
 		if (read == -1)
 			exit_shell(argv, buf, env_var, read);
-		argv = create_list_of_arg(buf);
-		if (check_builtin(argv, buf, &env_var, environ, read, av))
-			continue;
-		dir = command_exist(argv[0], environ);
-		if (dir == NULL)
+		if (read > 1)
 		{
-			execve_error(av, argv, buf, dir);
-			continue;
+			argv = create_list_of_arg(buf);
+			if (check_builtin(argv, buf, &env_var, environ, read, av))
+				continue;
+			dir = command_exist(argv[0], environ);
+			if (dir == NULL)
+			{
+				execve_error(av, argv, buf, dir);
+				continue;
+			}
+			fork_child(dir, argv, environ, av, buf);
 		}
-		fork_child(dir, argv, environ, av, buf);
 	}
 	return (0);
 }

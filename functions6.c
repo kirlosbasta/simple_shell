@@ -5,11 +5,12 @@
  * @environ: Enviromental variables
  * @argv: Argument lis
  * @av: command line argument
+ * @head: head of list that track environ
  *
  * Return: 0 on success and -1 on failure
  */
 
-int cd(char **argv, char **environ, char **av)
+int cd(char **argv, char **environ, char **av, list_t **head)
 {
 	char *tmp = NULL, *home, *oldpwd;
 
@@ -20,7 +21,7 @@ int cd(char **argv, char **environ, char **av)
 		{
 			oldpwd = _getenv("OLDPWD", environ);
 			chdir(oldpwd);
-			_setenv("PWD", oldpwd, 1, environ);
+			_setenv("PWD", oldpwd, 1, environ, head);
 		}
 		else if (chdir(argv[1]) == -1)
 		{
@@ -32,15 +33,37 @@ int cd(char **argv, char **environ, char **av)
 			perror(" ");
 			return (-1);
 		}
-		_setenv("PWD", argv[1], 1, environ);
+		_setenv("PWD", argv[1], 1, environ, head);
 	}
 	else
 	{
 		home = _getenv("HOME", environ);
 		chdir(home);
-		_setenv("PWD", home, 1, environ);
+		_setenv("PWD", home, 1, environ, head);
 	}
-	_setenv("OLDPWD", tmp, 1, environ);
+	_setenv("OLDPWD", tmp, 1, environ, head);
 	free(tmp);
 	return (0);
+}
+
+/**
+ * add_node - Add str and it's length to a list
+ * @head: The address of the head
+ * @str: String to be added to the new node
+ *
+ * Return: pointer to the new node
+ */
+
+list_t *add_node(list_t **head, const char *str)
+{
+	list_t *node = malloc(sizeof(list_t));
+
+	if (node == NULL)
+	{
+		return (NULL);
+	}
+	node->str = (char *) str;
+	node->next = *head;
+	*head = node;
+	return (node);
 }

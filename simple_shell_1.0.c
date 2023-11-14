@@ -13,7 +13,8 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 {
 	int read;
 	size_t n = 0;
-	char *buf = NULL, *env_var = NULL, **argv = NULL, *dir;
+	char *buf = NULL, **argv = NULL, *dir;
+	list_t *head = NULL;
 
 	while (1)
 	{
@@ -22,11 +23,11 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 			write(STDOUT_FILENO, "$ ", 3);
 		read = _getline(&buf, &n, stdin);
 		if (read == -1)
-			exit_shell(argv, buf, env_var, read);
+			exit_shell(argv, buf, &head, read);
 		if (read > 1)
 		{
 			argv = create_list_of_arg(buf);
-			if (check_builtin(argv, buf, &env_var, environ, read, av))
+			if (check_builtin(argv, buf, &head, environ, read, av))
 				continue;
 			dir = command_exist(argv[0], environ);
 			if (dir == NULL)

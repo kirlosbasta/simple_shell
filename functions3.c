@@ -42,18 +42,18 @@ char *_strtok(char *str, const char *delim)
  * exit_shell - Exit the shell with a given status if provided
  * @argv: List of argument
  * @buf: pointer to the buffer to be freed
- * @env_var: pointer to allocated memory in setenv
+ * @head: pointer to allocated memory in setenv
  * @read: the result of read function
  *
  * Return: Nothing
  */
 
-void exit_shell(char **argv, char *buf, char *env_var, int read)
+void exit_shell(char **argv, char *buf, list_t **head, int read)
 {
 	int status;
 
-	if (env_var != NULL)
-		free(env_var);
+	if (*head != NULL)
+		free_single_list(*head);
 	if (isatty(0) && read == -1)
 		write(STDOUT_FILENO, "\n", 2);
 	if (read != -1 && argv[1] != NULL)
@@ -112,12 +112,13 @@ int _atoi(char *s)
  * @overwrite: 0 to indicate that if a variable exist don't change it's value
  * and nonezero to overwrite
  * @environ: List of enviromental variable
+ * @head: Head of linked list to keep track of allocated memory
  *
  * Return: pointer to the allocated memory in succes and NULL in failure
  */
 
-char *_setenv(const char *name, const char *value, int overwrite,
-			char **environ)
+list_t *_setenv(const char *name, const char *value, int overwrite,
+			char **environ, list_t **head)
 {
 	char *new_var, *tmp;
 	int i, j;
@@ -142,7 +143,8 @@ char *_setenv(const char *name, const char *value, int overwrite,
 			if (overwrite != 0)
 			{
 				environ[i] = new_var;
-				return (new_var);
+				add_node(head, new_var);
+				return (*head);
 			}
 			else
 			{
@@ -153,7 +155,8 @@ char *_setenv(const char *name, const char *value, int overwrite,
 	}
 	environ[i] = new_var;
 	environ[i + 1] = NULL;
-	return (new_var);
+	add_node(head, new_var);
+	return (*head);
 }
 
 /**

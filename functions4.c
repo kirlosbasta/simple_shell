@@ -132,7 +132,7 @@ int name_value_check(char *name, char *value)
  * check_builtin - Check if the command called is a builtin command and execute
  * @argv: List of argument
  * @buf: Esseintial parameter
- * @env_var: Esseintial parameter
+ * @head: Esseintial parameter
  * @environ: Esseintial parameter
  * @read: Esseintial parameter
  * @av: Esseintial parameter
@@ -140,16 +140,16 @@ int name_value_check(char *name, char *value)
  * Return: 1 if it's builtin and 0 if not
  */
 
-int check_builtin(char **argv,  char *buf, char **env_var,
+int check_builtin(char **argv,  char *buf, list_t **head,
 					char **environ, int read, char **av)
 {
 	if (_strcmp("exit", argv[0]) == 0)
 	{
-		exit_shell(argv, buf, *env_var, read);
+		exit_shell(argv, buf, head, read);
 	}
 	if (_strcmp("setenv", argv[0]) == 0)
 	{
-		*env_var = _setenv(argv[1], argv[2], 1, environ);
+		*head = _setenv(argv[1], argv[2], 1, environ, head);
 		free(argv);
 		return (1);
 	}
@@ -167,7 +167,7 @@ int check_builtin(char **argv,  char *buf, char **env_var,
 	}
 	if (_strcmp("cd", argv[0]) == 0)
 	{
-		cd(argv, environ, av);
+		cd(argv, environ, av, head);
 		free(argv);
 		return (1);
 	}

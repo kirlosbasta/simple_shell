@@ -256,6 +256,61 @@ list_t *add_node_end(list_t **head, const char *str)
 	return (node);
 }
 
+int check_delim(char *s, char *delim)
+{
+	int i;
+
+	if (s == NULL || delim == NULL)
+	{
+		return (0);
+	}
+	for (i = 0; s[i] != '\0'; i++)
+	{
+		if (s[i] == *delim)
+		{
+			return (1);
+		}
+	}
+	return (0);
+}
+
+int name_value_check(char *name, char *value)
+{
+	if (name == NULL || value == NULL)
+	{
+		perror("usage setenv VARIABLE VALUE");
+		return (1);
+	}
+	if (check_delim((char *) name, "="))
+	{
+		perror("The name sould not contain = sign");
+		return (1);
+	}
+	else
+	{
+		return (0);
+	}
+
+}
+
+char *_setenv_helper(char *name, char *value)
+{
+	char *new_var;
+	int name_len, value_len;
+
+	if (name_value_check((char *)name, (char *)value))
+		return (NULL);
+	name_len = _strlen((char *)name);
+	value_len = _strlen((char *) value);
+	new_var = malloc(sizeof(char) * (name_len + value_len + 2));
+	if (new_var == NULL)
+	{
+		perror("malloc");
+		return (NULL);
+	}
+	return (new_var);
+}
+
 /**
  * _setenv - set a vairable to the enviroment
  * @name: Name of the vairable
@@ -266,51 +321,44 @@ list_t *add_node_end(list_t **head, const char *str)
  * Return: 0 on success and 1 on failure
  */
 
-int _setenv(const char *name, const char *value, int overwrite)
+char *_setenv(const char *name, const char *value, int overwrite,
+			char **environ)
 {
-	extern char **environ;
-	char *new_var, *function_name;
-	int name_len, value_len, i, j;
+	char *new_var, *tmp;
+	int i, j;
 
-	name_len = _strlen(name);
-	value_len = _strlen(value);
-	new_var = malloc(sizeof(char) * (name_len + value_len + 2));
+	new_var = _setenv_helper((char *) name, (char *) value);
 	if (new_var == NULL)
-	{
-		perror("malloc");
-		return (-1);
-	}
+		return (NULL);
 	new_var = _strcpy(new_var, (char *) name);
-	new_var = str_concat(new_var, "=");
-	new_var = str_concat(new_var, (char *) value);
+	tmp = str_concat(new_var, "=");
+	free(new_var);
+	new_var = str_concat(tmp, (char *) value);
+	free(tmp);
 	for (i = 0; environ[i] != NULL; i++)
 	{
 		for (j = 0; new_var[j] != '='; j++)
 		{
 			if (environ[i][j] != new_var[j])
-			{
 				break;
-			}
 		}
 		if (new_var[j] == '=')
 		{
 			if (overwrite != 0)
 			{
 				environ[i] = new_var;
-				return (0);
+				return (new_var);
 			}
 			else
 			{
 				free(new_var);
-				return (0);
+				return (NULL);
 			}
 		}
 	}
-	function_name = environ[i - 1];
-	environ[i - 1] = new_var;
-	environ[i] = function_name;
+	environ[i] = new_var;
 	environ[i + 1] = NULL;
-	return (0);
+	return (new_var);
 }
 
 /**
@@ -338,7 +386,7 @@ void _printenv(void)
  * Return: pointer to pathname or NULL
  */
 
-char *command_exist(char *name, char **environ);
+char *command_exist(char **environ)
 {
 	char *path = _getenv("PATH", environ);
 	char *command = "/ls", *dir;
@@ -356,4 +404,14 @@ char *command_exist(char *name, char **environ);
 		current = current->next;
 	}
 	return (NULL);
+}
+
+int main(void)
+{
+	extern char **environ;
+
+	_setenv("KOKO", "COOL", 1, environ);
+	_printenv();
+	free(*environ);
+	return (0);
 }

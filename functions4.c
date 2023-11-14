@@ -135,12 +135,13 @@ int name_value_check(char *name, char *value)
  * @env_var: Esseintial parameter
  * @environ: Esseintial parameter
  * @read: Esseintial parameter
+ * @av: Esseintial parameter
  *
  * Return: 1 if it's builtin and 0 if not
  */
 
 int check_builtin(char **argv,  char *buf, char **env_var,
-					char **environ, int read)
+					char **environ, int read, char **av)
 {
 	if (_strcmp("exit", argv[0]) == 0)
 	{
@@ -161,6 +162,12 @@ int check_builtin(char **argv,  char *buf, char **env_var,
 	if (_strcmp("env", argv[0]) == 0)
 	{
 		printenv(environ);
+		free(argv);
+		return (1);
+	}
+	if (_strcmp("cd", argv[0]) == 0)
+	{
+		cd(argv, environ, av);
 		free(argv);
 		return (1);
 	}

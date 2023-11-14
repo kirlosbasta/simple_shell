@@ -24,7 +24,7 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 		if (read == -1)
 			exit_shell(argv, buf, env_var, read);
 		argv = create_list_of_arg(buf);
-		if (check_builtin(argv, buf, &env_var, environ, read))
+		if (check_builtin(argv, buf, &env_var, environ, read, av))
 			continue;
 		dir = command_exist(argv[0], environ);
 		if (dir == NULL)

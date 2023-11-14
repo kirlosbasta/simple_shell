@@ -45,7 +45,7 @@ void exit_shell(char **argv, char *buf, char *env_var, int read);
 char **var_name_check(char *name, char **environ);
 int name_value_check(char *name, char *value);
 int check_builtin(char **argv,  char *buf, char **env_var,
-					char **environ, int read);
+					char **environ, int read, char **av);
 int fork_child(char *dir, char **argv, char **environ, char **av,
 				char *buf);
 char *command_exist(char *name, char **environ);
@@ -54,5 +54,6 @@ list_t *path_linked_list(char *path);
 char *_getenv(const char *name, char **environ);
 void free_single_list(list_t *head);
 char *_setenv_helper(char *name, char *value);
+int cd(char **argv, char **environ, char **av);
 
 #endif

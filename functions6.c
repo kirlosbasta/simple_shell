@@ -67,3 +67,24 @@ list_t *add_node(list_t **head, const char *str)
 	*head = node;
 	return (node);
 }
+
+/**
+ * check_comment - check if one of the arument is a comment
+ * @argv: list of argument
+ *
+ * Return: 1 if present and 0 if not
+ */
+
+int check_comment(char **argv)
+{
+	while (*argv != NULL)
+	{
+		if (_strcmp(*argv, "#") == 0)
+		{
+			*argv = NULL;
+			return (1);
+		}
+		argv++;
+	}
+	return (0);
+}

@@ -56,5 +56,6 @@ char *_getenv(const char *name, char **environ);
 void free_single_list(list_t *head);
 char *_setenv_helper(char *name, char *value);
 int cd(char **argv, char **environ, char **av, list_t **head);
+int check_comment(char **argv);
 
 #endif

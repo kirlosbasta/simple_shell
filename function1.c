@@ -64,7 +64,7 @@ char **create_list_of_arg(char *buf)
 		return (NULL);
 	}
 	i = 0;
-	argv[i] = _strtok(buf, " ");
+	argv[i] = strtok(buf, " ");
 	while (argv[i] != NULL)
 	{
 		if (count > 9)
@@ -74,11 +74,11 @@ char **create_list_of_arg(char *buf)
 		}
 		if (check_delim(argv[i], "\n") == 1)
 		{
-			argv[i] = _strtok(argv[i], "\n");
+			argv[i] = strtok(argv[i], "\n");
 
 		}
 		i++;
-		argv[i] = _strtok(NULL, " ");
+		argv[i] = strtok(NULL, " ");
 		count++;
 	}
 	return (argv);

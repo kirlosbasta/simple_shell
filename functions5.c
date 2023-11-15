@@ -44,12 +44,12 @@ list_t *path_linked_list(char *path)
 	char *dir;
 	list_t *head;
 
-	dir = _strtok(path_dup, ":");
+	dir = strtok(path_dup, ":");
 	head = NULL;
 	add_node_end(&head, dir);
 	while (dir != NULL)
 	{
-		dir = _strtok(NULL, ":");
+		dir = strtok(NULL, ":");
 		if (dir != NULL)
 		{
 			add_node_end(&head, dir);

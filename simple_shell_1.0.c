@@ -11,13 +11,14 @@
 
 int main(UNUSED int ac, UNUSED char **av, char **environ)
 {
-	int read;
+	int read, count = 0;
 	size_t n = 0;
 	char *buf = NULL, **argv = NULL, *dir;
 	list_t *head = NULL;
 
 	while (1)
 	{
+		count++;
 		argv = NULL;
 		if (isatty(0))
 			write(STDOUT_FILENO, "$ ", 3);
@@ -33,10 +34,10 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 			dir = command_exist(argv[0], environ);
 			if (dir == NULL)
 			{
-				execve_error(av, argv, buf, dir);
+				execve_error(av, argv, buf, dir, count);
 				continue;
 			}
-			fork_child(dir, argv, environ, av, buf);
+			fork_child(dir, argv, environ, av, buf, count);
 		}
 	}
 	return (0);

@@ -29,7 +29,7 @@ char **create_list_of_arg(char *buf);
 void *_memcpy(char *dest, char *src, unsigned int n);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 void free_list(char **argv);
-void execve_error(char **av, char **argv, char *buf, char *dir);
+void execve_error(char **av, char **argv, char *buf, char *dir, int count);
 int _strcmp(char *s1, char *s2);
 char *_strdup(char *str);
 char *_strcpy(char *dest, char *src);
@@ -47,7 +47,7 @@ int name_value_check(char *name, char *value);
 int check_builtin(char **argv,  char *buf, list_t **head,
 					char **environ, int read, char **av);
 int fork_child(char *dir, char **argv, char **environ, char **av,
-				char *buf);
+				char *buf, int count);
 char *command_exist(char *name, char **environ);
 list_t *add_node_end(list_t **head, const char *str);
 list_t *add_node(list_t **head, const char *str);

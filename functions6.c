@@ -88,3 +88,22 @@ int check_comment(char **argv)
 	}
 	return (0);
 }
+
+/**
+ * num_to_str - convert a number to string
+ * @num: Number
+ *
+ * Return: string
+ */
+
+char *num_to_str(int num)
+{
+	char *str = malloc(sizeof(char) * 6);
+
+	while (num > 0)
+	{
+		str[0] = (num % 10) + '0';
+		num /= 10;
+	}
+	return (str);
+}

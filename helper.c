@@ -33,12 +33,13 @@ char *_setenv_helper(char *name, char *value)
  * @environ: Essenstial parameter
  * @av: Essenstial parameter
  * @buf: Essenstial parameter
+ * @count: number of commands so far
  *
  * Return: 0 in success and 1 in failure
  */
 
 int fork_child(char *dir, char **argv, char **environ, char **av,
-				char *buf)
+				char *buf, int count)
 {
 	pid_t child_pid;
 	int status;
@@ -50,7 +51,7 @@ int fork_child(char *dir, char **argv, char **environ, char **av,
 	{
 		if (execve(dir, argv, environ) == -1)
 		{
-			execve_error(av, argv, buf, dir);
+			execve_error(av, argv, buf, dir, count);
 			return (1);
 		}
 	}

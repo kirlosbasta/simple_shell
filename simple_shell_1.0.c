@@ -22,7 +22,7 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 		argv = NULL;
 		if (isatty(0))
 			write(STDOUT_FILENO, "$ ", 3);
-		read = getline(&buf, &n, stdin);
+		read = _getline(&buf, &n, stdin);
 		if (read == -1)
 			exit_shell(argv, buf, &head, read);
 		if (read > 1)

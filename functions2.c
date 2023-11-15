@@ -6,16 +6,22 @@
  * @argv: List of arguments
  * @buf: buffer
  * @dir: pointer to direcory
+ * @count: Number of commands so far
  *
  * Return: Nothing
  */
 
-void execve_error(char **av, char **argv, UNUSED char *buf, char *dir)
+void execve_error(char **av, char **argv, UNUSED char *buf,
+				char *dir, UNUSED int count)
 {
+	char *num = "1";
+
 	write(STDERR_FILENO, av[0], _strlen(av[0]));
 	write(STDERR_FILENO, ": ", 3);
+	write(STDERR_FILENO, num, 2);
+	write(STDERR_FILENO, ": ", 3);
 	write(STDERR_FILENO, argv[0], _strlen(argv[0]));
-	perror(" ");
+	write(STDERR_FILENO, ": not found\n", 13);
 	if (dir != NULL)
 		free(dir);
 	free(argv);

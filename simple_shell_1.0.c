@@ -62,15 +62,15 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 					remove_space(multi_buf);
 					argv = create_list_of_arg(multi_buf);
 					check_comment(argv);
-					if (check_builtin(argv, buf, &head, environ, read, av):
+					if (check_builtin(argv, multi_buf, &head, environ, read, av):
 						continue;
 					dir = command_exist(argv[0], environ);
 					if (dir == NULL)
 					{
-						execve_error(av, argv, buf, dir, count);
+						execve_error(av, argv, multi_buf, dir, count);
 						continue;
 					}
-					fork_child(dir, argv, environ, av, buf, count);
+					fork_child(dir, argv, environ, av, multi_buf, count);
 					multi_buf = _strtok(NULL, x);
 				}
 			}

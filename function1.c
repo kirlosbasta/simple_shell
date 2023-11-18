@@ -24,7 +24,7 @@ int _strlen(char *s)
  * @s: pointer to string
  * @delim: pointer to the character to search for
  *
- * Return: 1 if it contain new line and 0 if it doesn't
+ * Return: i if it contain new line and 0 if it doesn't
  */
 
 int check_delim(char *s, char *delim)

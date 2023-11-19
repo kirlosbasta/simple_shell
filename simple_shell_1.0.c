@@ -11,7 +11,7 @@
 
 int main(UNUSED int ac, UNUSED char **av, char **environ)
 {
-	int read, count = 0;
+	int read, count = 0, status = 0;
 	size_t n = 0;
 	char *buf = NULL, **argv = NULL, *dir;
 	list_t *head = NULL;
@@ -24,12 +24,12 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 			write(STDOUT_FILENO, "$ ", 3);
 		read = getline(&buf, &n, stdin);
 		if (read == -1)
-			exit_shell(argv, buf, &head, read);
+			exit_shell(argv, buf, &head, read, &status);
 		if (read > 1)
 		{
 			argv = create_list_of_arg(buf);
 			check_comment(argv);
-			if (check_builtin(argv, buf, &head, environ, read, av))
+			if (check_builtin(argv, buf, &head, environ, read, av, &status))
 				continue;
 			dir = command_exist(argv[0], environ);
 			if (dir == NULL)
@@ -37,7 +37,7 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 				execve_error(av, argv, buf, dir, count);
 				continue;
 			}
-			fork_child(dir, argv, environ, av, buf, count);
+			fork_child(dir, argv, environ, av, buf, count, &status);
 		}
 	}
 	return (0);

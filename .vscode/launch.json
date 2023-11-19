@@ -6,10 +6,10 @@
       "type": "cppdbg",
       "request": "launch",
       "args": [],
-      "stopAtEntry": false,
+      "stopAtEntry": true,
       "externalConsole": false,
       "cwd": "/home/koko/KOKO/ALX/simple_shell",
-      "program": "/home/koko/KOKO/ALX/simple_shell/build/Debug/outDebug",
+      "program": "${fileDirname}/hsh",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

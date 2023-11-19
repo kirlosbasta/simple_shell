@@ -42,13 +42,14 @@ int _unsetenv(char *name, char **environ);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 char *_strtok(char *str, const char *delim);
 int _atoi(char *s);
-void exit_shell(char **argv, char *buf, list_t **env_var, int read);
+void exit_shell(char **argv, char *buf, list_t **env_var,
+				int read, int *status);
 char **var_name_check(char *name, char **environ);
 int name_value_check(char *name, char *value);
 int check_builtin(char **argv,  char *buf, list_t **head,
-					char **environ, int read, char **av);
+					char **environ, int read, char **av, int *status);
 int fork_child(char *dir, char **argv, char **environ, char **av,
-				char *buf, int count);
+				char *buf, int count, int *status);
 char *command_exist(char *name, char **environ);
 list_t *add_node_end(list_t **head, const char *str);
 list_t *add_node(list_t **head, const char *str);

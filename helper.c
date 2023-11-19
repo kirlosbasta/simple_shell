@@ -34,15 +34,15 @@ char *_setenv_helper(char *name, char *value)
  * @av: Essenstial parameter
  * @buf: Essenstial parameter
  * @count: number of commands so far
+ * @status: the exit status of the child
  *
  * Return: 0 in success and 1 in failure
  */
 
 int fork_child(char *dir, char **argv, char **environ, char **av,
-				char *buf, int count)
+				char *buf, int count, int *status)
 {
 	pid_t child_pid;
-	int status;
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -57,7 +57,8 @@ int fork_child(char *dir, char **argv, char **environ, char **av,
 	}
 	else
 	{
-		wait(&status);
+		wait(status);
+		*status = WEXITSTATUS(*status);
 		free(argv);
 		if (dir != NULL)
 			free(dir);

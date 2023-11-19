@@ -136,12 +136,13 @@ int name_value_check(char *name, char *value)
  * @environ: Esseintial parameter
  * @read: Esseintial parameter
  * @av: Esseintial parameter
+ * @status: the exit status of the child proccess
  *
  * Return: 1 if it's builtin and 0 if not
  */
 
 int check_builtin(char **argv,  char *buf, list_t **head,
-					char **environ, int read, char **av)
+					char **environ, int read, char **av, int *status)
 {
 	if (*argv == NULL)
 	{
@@ -150,7 +151,7 @@ int check_builtin(char **argv,  char *buf, list_t **head,
 	}
 	if (_strcmp("exit", argv[0]) == 0)
 	{
-		exit_shell(argv, buf, head, read);
+		exit_shell(argv, buf, head, read, status);
 	}
 	if (_strcmp("setenv", argv[0]) == 0)
 	{

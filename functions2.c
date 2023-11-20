@@ -2,31 +2,26 @@
 
 /**
  * execve_error - Handle execve error
- * @av: List of main command line argument
- * @argv: List of arguments
- * @buf: buffer
- * @dir: pointer to direcory
- * @count: Number of commands so far
+ * @var: pointer to struct contain collection of variables
  *
  * Return: Nothing
  */
 
-void execve_error(char **av, char **argv, UNUSED char *buf,
-				char *dir, UNUSED int count)
+void execve_error(var_inf *var)
 {
 	char *num = "1";
 
-	write(STDERR_FILENO, av[0], _strlen(av[0]));
-	write(STDERR_FILENO, ": ", 3);
-	write(STDERR_FILENO, num, 2);
-	write(STDERR_FILENO, ": ", 3);
-	write(STDERR_FILENO, argv[0], _strlen(argv[0]));
-	write(STDERR_FILENO, ": not found\n", 13);
-	if (dir != NULL)
-		free(dir);
-	free(argv);
-	argv = NULL;
-	dir = NULL;
+	write(STDERR_FILENO, var->av[0], _strlen(var->av[0]));
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, num, 1);
+	write(STDERR_FILENO, ": ", 2);
+	write(STDERR_FILENO, var->argv[0], _strlen(var->argv[0]));
+	write(STDERR_FILENO, ": not found\n", 12);
+	if (var->dir != NULL)
+		free(var->dir);
+	free(var->argv);
+	var->argv = NULL;
+	var->dir = NULL;
 }
 
 /**

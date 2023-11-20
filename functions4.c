@@ -130,51 +130,44 @@ int name_value_check(char *name, char *value)
 
 /**
  * check_builtin - Check if the command called is a builtin command and execute
- * @argv: List of argument
- * @buf: Esseintial parameter
- * @head: Esseintial parameter
- * @environ: Esseintial parameter
- * @read: Esseintial parameter
- * @av: Esseintial parameter
- * @status: the exit status of the child proccess
+ * @var: pointer to struct contain collection of variables
  *
  * Return: 1 if it's builtin and 0 if not
  */
 
-int check_builtin(char **argv,  char *buf, list_t **head,
-					char **environ, int read, char **av, int *status)
+int check_builtin(var_inf *var)
 {
-	if (*argv == NULL)
+	if (*var->argv == NULL)
 	{
-		free(argv);
+		free(var->argv);
 		return (1);
 	}
-	if (_strcmp("exit", argv[0]) == 0)
+	if (_strcmp("exit", var->argv[0]) == 0)
 	{
-		exit_shell(argv, buf, head, read, status);
+		exit_shell(var);
 	}
-	if (_strcmp("setenv", argv[0]) == 0)
+	if (_strcmp("setenv", var->argv[0]) == 0)
 	{
-		*head = _setenv(argv[1], argv[2], 1, environ, head);
-		free(argv);
+		var->head = _setenv(var->argv[1], var->argv[2], 1, var->environ, &var->head);
+		free(var->argv);
 		return (1);
 	}
-	if (_strcmp("unsetenv", argv[0]) == 0)
+	if (_strcmp("unsetenv", var->argv[0]) == 0)
 	{
-		_unsetenv(argv[1], environ);
-		free(argv);
+		_unsetenv(var->argv[1], var->environ);
+		free(var->argv);
 		return (1);
 	}
-	if (_strcmp("env", argv[0]) == 0)
+	if (_strcmp("env", var->argv[0]) == 0)
 	{
-		printenv(environ);
-		free(argv);
+		printenv(var->environ);
+		free(var->argv);
 		return (1);
 	}
-	if (_strcmp("cd", argv[0]) == 0)
+	if (_strcmp("cd", var->argv[0]) == 0)
 	{
-		cd(argv, environ, av, head);
-		free(argv);
+		cd(var->argv, var->environ, var->av, &var->head);
+		free(var->argv);
 		return (1);
 	}
 	return (0);

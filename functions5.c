@@ -22,7 +22,7 @@ char *_getenv(const char *name, char **environ)
 				break;
 			}
 		}
-		if (name[j] == '\0')
+		if (name[j] == '\0' && environ[i][j] == '=')
 		{
 			value = environ[i] + j + 1;
 			return (value);

@@ -40,33 +40,29 @@ char *_strtok(char *str, const char *delim)
 
 /**
  * exit_shell - Exit the shell with a given status if provided
- * @argv: List of argument
- * @buf: pointer to the buffer to be freed
- * @head: pointer to allocated memory in setenv
- * @read: the result of read function
- * @status: exit status of wait
+ * @var: pointer to struct contain collection of variables
  *
  * Return: Nothing
  */
 
-void exit_shell(char **argv, char *buf, list_t **head, int read, int *status)
+void exit_shell(var_inf *var)
 {
 	int E_status;
 
-	if (*head != NULL)
-		free_single_list(*head);
-	if (isatty(0) && read == -1)
+	if (var->head != NULL)
+		free_single_list(var->head);
+	if (isatty(0) && var->read == -1)
 		write(STDOUT_FILENO, "\n", 2);
-	if (read != -1 && argv[1] != NULL)
+	if (var->read != -1 && var->argv[1] != NULL)
 	{
-		E_status = _atoi(argv[1]);
-		free(buf);
-		free(argv);
+		E_status = _atoi(var->argv[1]);
+		free(var->buf);
+		free(var->argv);
 		exit(E_status);
 	}
-	free(argv);
-	free(buf);
-	exit(*status);
+	free(var->argv);
+	free(var->buf);
+	exit(*var->status);
 }
 
 /**

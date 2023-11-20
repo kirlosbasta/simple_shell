@@ -28,19 +28,12 @@ char *_setenv_helper(char *name, char *value)
 
 /**
  * fork_child - Fork helper
- * @dir: Essenstial parameter
- * @argv: Essenstial parameter
- * @environ: Essenstial parameter
- * @av: Essenstial parameter
- * @buf: Essenstial parameter
- * @count: number of commands so far
- * @status: the exit status of the child
+ * @var: pointer to struct contain collection of variables
  *
  * Return: 0 in success and 1 in failure
  */
 
-int fork_child(char *dir, char **argv, char **environ, char **av,
-				char *buf, int count, int *status)
+int fork_child(var_inf *var)
 {
 	pid_t child_pid;
 
@@ -49,19 +42,19 @@ int fork_child(char *dir, char **argv, char **environ, char **av,
 		perror("Fork Error\n");
 	if (child_pid == 0)
 	{
-		if (execve(dir, argv, environ) == -1)
+		if (execve(var->dir, var->argv, var->environ) == -1)
 		{
-			execve_error(av, argv, buf, dir, count);
+			execve_error(var);
 			return (1);
 		}
 	}
 	else
 	{
-		wait(status);
-		*status = WEXITSTATUS(*status);
-		free(argv);
-		if (dir != NULL)
-			free(dir);
+		wait(var->status);
+		*var->status = WEXITSTATUS(*var->status);
+		free(var->argv);
+		if (var->dir != NULL)
+			free(var->dir);
 	}
 	return (0);
 }

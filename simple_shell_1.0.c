@@ -11,33 +11,36 @@
 
 int main(UNUSED int ac, UNUSED char **av, char **environ)
 {
-	int read, count = 0, status = 0;
+	var_inf var;
+	int status = 0;
 	size_t n = 0;
-	char *buf = NULL, **argv = NULL, *dir;
-	list_t *head = NULL;
 
+	var.count = 0, var.status = &status;
+	var.argv = NULL, var.buf = NULL, var.environ = environ, var.av = av;
+	var.head = NULL;
 	while (1)
 	{
-		count++;
-		argv = NULL;
+		var.count++;
+		var.argv = NULL;
 		if (isatty(0))
 			write(STDOUT_FILENO, "$ ", 3);
-		read = getline(&buf, &n, stdin);
-		if (read == -1)
-			exit_shell(argv, buf, &head, read, &status);
-		if (read > 1)
+		var.read = getline(&var.buf, &n, stdin);
+		if (var.read == -1)
+			exit_shell(&var);
+		if (var.read > 1)
 		{
-			argv = create_list_of_arg(buf);
-			check_comment(argv);
-			if (check_builtin(argv, buf, &head, environ, read, av, &status))
+			var.argv = create_list_of_arg(var.buf);
+			check_comment(var.argv);
+			if (check_builtin(&var))
 				continue;
-			dir = command_exist(argv[0], environ);
-			if (dir == NULL)
+			var.dir = command_exist(var.argv[0], environ);
+			if (var.dir == NULL)
 			{
-				execve_error(av, argv, buf, dir, count);
+				*var.status = 127;
+				execve_error(&var);
 				continue;
 			}
-			fork_child(dir, argv, environ, av, buf, count, &status);
+			fork_child(&var);
 		}
 	}
 	return (0);

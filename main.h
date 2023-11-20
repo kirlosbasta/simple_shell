@@ -24,13 +24,41 @@ typedef struct list_t
 	struct list_t *next;
 } list_t;
 
+/**
+ * struct var_inf - Collection of variables needed
+ *
+ * @buf: Buffer that holds the input
+ * @argv: List of argument
+ * @av: Command line argument
+ * @dir: Path to command
+ * @environ: Enviromental variables
+ * @count: Number of command so far
+ * @head: list of allocated memory by setenv and cd
+ * @read: Number of bytes read by read
+ * @status: Exit status of the child proccess
+ */
+
+typedef struct var_inf
+{
+	char *buf;
+	char **argv;
+	char **av;
+	char *dir;
+	char **environ;
+	int count;
+	list_t *head;
+	int read;
+	int *status;
+} var_inf;
+
+
 int _strlen(char *s);
 int check_delim(char *s, char *delim);
 char **create_list_of_arg(char *buf);
 void *_memcpy(char *dest, char *src, unsigned int n);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 void free_list(char **argv);
-void execve_error(char **av, char **argv, char *buf, char *dir, int count);
+void execve_error(var_inf *var);
 int _strcmp(char *s1, char *s2);
 char *_strdup(char *str);
 char *_strcpy(char *dest, char *src);
@@ -42,14 +70,11 @@ int _unsetenv(char *name, char **environ);
 ssize_t _getline(char **lineptr, size_t *n, FILE *stream);
 char *_strtok(char *str, const char *delim);
 int _atoi(char *s);
-void exit_shell(char **argv, char *buf, list_t **env_var,
-				int read, int *status);
+void exit_shell(var_inf *var);
 char **var_name_check(char *name, char **environ);
 int name_value_check(char *name, char *value);
-int check_builtin(char **argv,  char *buf, list_t **head,
-					char **environ, int read, char **av, int *status);
-int fork_child(char *dir, char **argv, char **environ, char **av,
-				char *buf, int count, int *status);
+int check_builtin(var_inf *var);
+int fork_child(var_inf *var);
 char *command_exist(char *name, char **environ);
 list_t *add_node_end(list_t **head, const char *str);
 list_t *add_node(list_t **head, const char *str);

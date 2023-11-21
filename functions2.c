@@ -3,11 +3,12 @@
 /**
  * execve_error - Handle execve error
  * @var: pointer to struct contain collection of variables
+ * @str: pointer to string
  *
  * Return: Nothing
  */
 
-void execve_error(var_inf *var)
+void execve_error(var_inf *var, char *str)
 {
 	char *num = num_to_str(var->count);
 
@@ -16,7 +17,7 @@ void execve_error(var_inf *var)
 	write(STDERR_FILENO, num, _strlen(num));
 	write(STDERR_FILENO, ": ", 2);
 	write(STDERR_FILENO, var->argv[0], _strlen(var->argv[0]));
-	write(STDERR_FILENO, ": not found\n", 12);
+	write(STDERR_FILENO, str, _strlen(str));
 	if (var->dir != NULL)
 		free(var->dir);
 	free(var->argv);

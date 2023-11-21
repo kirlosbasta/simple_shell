@@ -48,6 +48,7 @@ char *_strtok(char *str, const char *delim)
 void exit_shell(var_inf *var)
 {
 	int E_status;
+	char *tmp;
 
 	if (var->head != NULL)
 		free_single_list(var->head);
@@ -56,6 +57,15 @@ void exit_shell(var_inf *var)
 	if (var->read != -1 && var->argv[1] != NULL)
 	{
 		E_status = _atoi(var->argv[1]);
+		if (E_status < 0 || check_char(var->argv[1]))
+		{
+			tmp = var->argv[1];
+			execve_error(var, ": Illegal number: ");
+			write(STDERR_FILENO, tmp, _strlen(tmp));
+			write(STDERR_FILENO, "\n", 1);
+			*var->status = 2;
+			return;
+		}
 		free(var->buf);
 		free(var->argv);
 		exit(E_status);

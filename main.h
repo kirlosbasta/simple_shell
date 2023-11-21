@@ -58,7 +58,7 @@ char **create_list_of_arg(char *buf);
 void *_memcpy(char *dest, char *src, unsigned int n);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 void free_list(char **argv);
-void execve_error(var_inf *var);
+void execve_error(var_inf *var, char *str);
 int _strcmp(char *s1, char *s2);
 char *_strdup(char *str);
 char *_strcpy(char *dest, char *src);
@@ -86,5 +86,6 @@ int cd(char **argv, char **environ, char **av, list_t **head);
 int check_comment(char **argv);
 void rev_string(char *s);
 char *num_to_str(int num);
+int check_char(char *s);
 
 #endif

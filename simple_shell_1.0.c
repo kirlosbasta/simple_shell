@@ -17,6 +17,7 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 
 	var.count = 0, var.status = &status;
 	var.argv = NULL, var.buf = NULL, var.environ = environ, var.av = av;
+	var.dir = NULL;
 	var.head = NULL;
 	while (1)
 	{
@@ -37,7 +38,7 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 			if (var.dir == NULL)
 			{
 				*var.status = 127;
-				execve_error(&var);
+				execve_error(&var, ": not found\n");
 				continue;
 			}
 			fork_child(&var);

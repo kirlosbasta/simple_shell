@@ -145,6 +145,7 @@ int check_builtin(var_inf *var)
 	if (_strcmp("exit", var->argv[0]) == 0)
 	{
 		exit_shell(var);
+		return (1);
 	}
 	if (_strcmp("setenv", var->argv[0]) == 0)
 	{

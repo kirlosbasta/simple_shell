@@ -44,7 +44,7 @@ int fork_child(var_inf *var)
 	{
 		if (execve(var->dir, var->argv, var->environ) == -1)
 		{
-			execve_error(var);
+			execve_error(var, ": not found\n");
 			return (1);
 		}
 	}
@@ -55,6 +55,7 @@ int fork_child(var_inf *var)
 		free(var->argv);
 		if (var->dir != NULL)
 			free(var->dir);
+		var->dir = NULL;
 	}
 	return (0);
 }

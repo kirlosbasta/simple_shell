@@ -30,6 +30,7 @@ int cd(var_inf *var)
 			execve_error(var, ": can't cd to ");
 			write(STDERR_FILENO, temp, _strlen(temp));
 			write(STDERR_FILENO, "\n", 1);
+			free(tmp);
 			return (-1);
 		}
 		_setenv("PWD", var->argv[1], 1, var->environ, &var->head);

@@ -167,7 +167,7 @@ int check_builtin(var_inf *var)
 	}
 	if (_strcmp("cd", var->argv[0]) == 0)
 	{
-		cd(var->argv, var->environ, var->av, &var->head);
+		cd(var);
 		free(var->argv);
 		return (1);
 	}

@@ -2,46 +2,47 @@
 
 /**
  * cd - Change the current working directory
- * @environ: Enviromental variables
- * @argv: Argument lis
- * @av: command line argument
- * @head: head of list that track environ
+ * @var: pointer to struct contain collection of variables
  *
  * Return: 0 on success and -1 on failure
  */
 
-int cd(char **argv, char **environ, char **av, list_t **head)
+int cd(var_inf *var)
 {
-	char *tmp = NULL, *home, *oldpwd;
+	char *tmp = NULL, *home, *oldpwd, *temp;
 
 	tmp = getcwd(tmp, 0);
-	if (argv[1] != NULL)
+	if (var->argv[1] != NULL)
 	{
-		if (_strcmp(argv[1], "-") == 0)
+		if (_strcmp(var->argv[1], "-") == 0)
 		{
-			oldpwd = _getenv("OLDPWD", environ);
+			oldpwd = _getenv("OLDPWD", var->environ);
+			if (oldpwd == NULL)
+				oldpwd = tmp;
 			chdir(oldpwd);
-			_setenv("PWD", oldpwd, 1, environ, head);
+			write(STDOUT_FILENO, oldpwd, _strlen(oldpwd));
+			write(STDOUT_FILENO, "\n", 1);
+			_setenv("PWD", oldpwd, 1, var->environ, &var->head);
 		}
-		else if (chdir(argv[1]) == -1)
+		else if (chdir(var->argv[1]) == -1)
 		{
-			write(STDERR_FILENO, av[0], _strlen(av[0]));
-			write(STDERR_FILENO, ": ", 3);
-			write(STDERR_FILENO, argv[0], _strlen(argv[0]));
-			write(STDERR_FILENO, ": can't cd to ", 15);
-			write(STDERR_FILENO, argv[1], _strlen(argv[1]));
-			perror(" ");
+			temp = var->argv[1];
+			execve_error(var, ": can't cd to ");
+			write(STDERR_FILENO, temp, _strlen(temp));
+			write(STDERR_FILENO, "\n", 1);
 			return (-1);
 		}
-		_setenv("PWD", argv[1], 1, environ, head);
+		_setenv("PWD", var->argv[1], 1, var->environ, &var->head);
 	}
 	else
 	{
-		home = _getenv("HOME", environ);
+		home = _getenv("HOME", var->environ);
+		if (home == NULL)
+			home = tmp;
 		chdir(home);
-		_setenv("PWD", home, 1, environ, head);
+		_setenv("PWD", home, 1, var->environ, &var->head);
 	}
-	_setenv("OLDPWD", tmp, 1, environ, head);
+	_setenv("OLDPWD", tmp, 1, var->environ, &var->head);
 	free(tmp);
 	return (0);
 }

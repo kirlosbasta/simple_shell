@@ -82,7 +82,7 @@ list_t *path_linked_list(char *path);
 char *_getenv(const char *name, char **environ);
 void free_single_list(list_t *head);
 char *_setenv_helper(char *name, char *value);
-int cd(char **argv, char **environ, char **av, list_t **head);
+int cd(var_inf *var);
 int check_comment(char **argv);
 void rev_string(char *s);
 char *num_to_str(int num);

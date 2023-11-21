@@ -99,11 +99,34 @@ int check_comment(char **argv)
 char *num_to_str(int num)
 {
 	char *str = malloc(sizeof(char) * 6);
+	int i = 0;
 
 	while (num > 0)
 	{
-		str[0] = (num % 10) + '0';
+		str[i++] = (num % 10) + '0';
 		num /= 10;
 	}
+	str[i] = '\0';
+	rev_string(str);
 	return (str);
+}
+
+/**
+ * rev_string - printthe string and it reverse
+ * @s: Poiinter to string
+ * Return: Nothing
+ */
+
+void rev_string(char *s)
+{
+	int len = _strlen(s);
+	int i;
+
+	for (i = 0; i < len / 2; i++)
+	{
+		char temp = s[i];
+
+		s[i] = s[len - 1 - i];
+		s[len - 1 - i] = temp;
+	}
 }

@@ -114,7 +114,7 @@ char *command_exist(char *name, char **environ)
 	list_t *head = path_linked_list(path);
 	list_t *current = head;
 
-	if (access(name, X_OK) == 0)
+	if (access(name, X_OK) == 0 && (name[0] == '/' || name[0] == '.'))
 	{
 		free_single_list(head);
 		dir = _strdup(name);

@@ -9,17 +9,18 @@
 
 void execve_error(var_inf *var)
 {
-	char *num = "1";
+	char *num = num_to_str(var->count);
 
 	write(STDERR_FILENO, var->av[0], _strlen(var->av[0]));
 	write(STDERR_FILENO, ": ", 2);
-	write(STDERR_FILENO, num, 1);
+	write(STDERR_FILENO, num, _strlen(num));
 	write(STDERR_FILENO, ": ", 2);
 	write(STDERR_FILENO, var->argv[0], _strlen(var->argv[0]));
 	write(STDERR_FILENO, ": not found\n", 12);
 	if (var->dir != NULL)
 		free(var->dir);
 	free(var->argv);
+	free(num);
 	var->argv = NULL;
 	var->dir = NULL;
 }

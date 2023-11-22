@@ -81,7 +81,7 @@ int check_comment(char **argv)
 {
 	while (*argv != NULL)
 	{
-		if (_strcmp(*argv, "#") == 0)
+		if (_strcmp(*argv, "#") == 0 || **argv == '#')
 		{
 			*argv = NULL;
 			return (1);

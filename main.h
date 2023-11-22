@@ -15,12 +15,14 @@
 /**
  * struct list_t - Nodes for a singly linked list
  * @str: pointer to char
+ * @argv: pointer to pointer to char
  * @next: pointer to next node
  */
 
 typedef struct list_t
 {
 	char *str;
+	char **argv;
 	struct list_t *next;
 } list_t;
 
@@ -87,5 +89,8 @@ int check_comment(char **argv);
 void rev_string(char *s);
 char *num_to_str(int num);
 int check_char(char *s);
+list_t *add_node_end_argv(list_t **head, char **str);
+int check_semicolon(var_inf *var);
+void free_single_list_argv(list_t *head);
 
 #endif

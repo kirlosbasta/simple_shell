@@ -32,6 +32,8 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 		{
 			var.argv = create_list_of_arg(var.buf);
 			check_comment(var.argv);
+			if (check_semicolon(&var))
+				continue;
 			if (check_builtin(&var))
 				continue;
 			var.dir = command_exist(var.argv[0], environ);
@@ -46,3 +48,4 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 	}
 	return (0);
 }
+

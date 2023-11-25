@@ -92,5 +92,10 @@ int check_char(char *s);
 list_t *add_node_end_argv(list_t **head, char **str);
 int check_semicolon(var_inf *var);
 void free_single_list_argv(list_t *head);
+int length_argv(char **argv);
+void shiftToRight(char **argv);
+void copy_list(char **old, char **new);
+void arrange_argv(var_inf *var, char *delim);
+void print_list(char **argv);
 
 #endif

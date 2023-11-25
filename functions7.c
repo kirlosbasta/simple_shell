@@ -32,8 +32,10 @@ int check_semicolon(var_inf *var)
 {
 	int i;
 	list_t *head = NULL, *current;
-	char **tmp = var->argv, **tmp2 = tmp;
+	char **tmp, **tmp2;
 
+	arrange_argv(var, ";");
+	tmp = var->argv, tmp2 = tmp;
 	for (i = 0; var->argv[i] != NULL; i++)
 	{
 		if (!_strcmp(var->argv[i], ";"))
@@ -138,4 +140,40 @@ void free_single_list_argv(list_t *head)
 		free(tmp);
 	}
 	free(head);
+}
+
+/**
+ * arrange_argv - Reshape the argument to seperate the delim
+ * @var: List of variables
+ * @delim: the delimter
+ *
+ * Return: Noting
+ */
+
+void arrange_argv(var_inf *var, char *delim)
+{
+	int i = 0, argv_len;
+	char **old_argv, **new_argv;
+
+	argv_len = length_argv(var->argv);
+	for (i = 0; var->argv[i] != NULL; i++)
+	{
+		if (check_delim(var->argv[i], delim))
+		{
+			if (_strlen(var->argv[i]) > 1)
+			{
+				new_argv = malloc(sizeof(char *) * (argv_len + 2));
+				copy_list(var->argv, new_argv);
+				old_argv = var->argv;
+				var->argv = new_argv;
+				free(old_argv);
+				argv_len += 2;
+				var->argv[i] = strtok(var->argv[i], delim);
+				shiftToRight(var->argv + i);
+				var->argv[++i] = ";";
+				shiftToRight(var->argv + i);
+				var->argv[++i] = strtok(NULL, delim);
+			}
+		}
+	}
 }

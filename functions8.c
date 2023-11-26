@@ -117,51 +117,7 @@ int check_logical(var_inf *var)
 		current = head;
 		if (*tmp != NULL)
 			add_node_end_argv_int(&head, tmp, 0);
-		while (head != NULL)
-		{
-			logic = head->logic;
-			var->argv = head->argv;
-			if (check_builtin(var))
-			{
-				head = head->next;
-				continue;
-			}
-			var->dir = command_exist(var->argv[0], var->environ);
-			if (var->dir == NULL)
-			{
-				*var->status = 127;
-				execve_error(var, ": not found\n");
-				head->argv = NULL;
-				head = head->next;
-				if (*var->status && logic == 2)
-				{
-					continue;
-				}
-				else if (*var->status && logic == 1)
-				{
-					break;
-				}
-			}
-			fork_child(var);
-			head->argv = NULL;
-			head = head->next;
-			if (!*var->status && logic == 2)
-			{
-				break;
-			}
-			else if (!*var->status && logic == 1)
-			{
-				continue;
-			}
-			else if (*var->status && logic == 2)
-			{
-				continue;
-			}
-			else if (*var->status && logic == 1)
-			{
-				break;
-			}
-		}
+		logical_wrapper(var, head);
 	}
 	free_single_list_argv(current);
 	free(tmp2);

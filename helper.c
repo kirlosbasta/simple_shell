@@ -60,3 +60,83 @@ int fork_child(var_inf *var)
 	}
 	return (0);
 }
+
+/**
+ * semicolon_wrapper - Shorten the code into functions
+ * @var: list of variables
+ * @head: head of list
+ *
+ * Return: Nothing
+ */
+
+void semicolon_wrapper(var_inf *var, list_t *head)
+{
+	while (head != NULL)
+	{
+		var->argv = head->argv;
+		if (check_builtin(var))
+		{
+			head = head->next;
+			continue;
+		}
+		var->dir = command_exist(var->argv[0], var->environ);
+		if (var->dir == NULL)
+		{
+			*var->status = 127;
+			execve_error(var, ": not found\n");
+			head->argv = NULL;
+			head = head->next;
+			continue;
+		}
+		fork_child(var);
+		head->argv = NULL;
+		head = head->next;
+	}
+}
+
+/**
+ * logical_wrapper - Shorten the code into functions
+ * @var: list of variables
+ * @head: head of list
+ *
+ * Return: Nothing
+ */
+
+void logical_wrapper(var_inf *var, list_t *head)
+{
+	int logic;
+
+	while (head != NULL)
+	{
+		logic = head->logic;
+		var->argv = head->argv;
+		if (check_builtin(var))
+		{
+			head = head->next;
+			continue;
+		}
+		var->dir = command_exist(var->argv[0], var->environ);
+		if (var->dir == NULL)
+		{
+			*var->status = 127;
+			execve_error(var, ": not found\n");
+			head->argv = NULL;
+			head = head->next;
+			if (*var->status && logic == 2)
+				continue;
+			else if (*var->status && logic == 1)
+				break;
+		}
+		fork_child(var);
+		head->argv = NULL;
+		head = head->next;
+		if (!*var->status && logic == 2)
+			break;
+		else if (!*var->status && logic == 1)
+			continue;
+		else if (*var->status && logic == 2)
+			continue;
+		else if (*var->status && logic == 1)
+			break;
+	}
+}

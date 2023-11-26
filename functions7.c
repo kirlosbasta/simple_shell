@@ -55,25 +55,7 @@ int check_semicolon(var_inf *var)
 		current = head;
 		if (*tmp != NULL)
 			add_node_end_argv(&head, tmp);
-		while (head != NULL)
-		{
-			var->argv = head->argv;
-			if (check_builtin(var))
-			{
-				head = head->next;
-				continue;
-			}
-			var->dir = command_exist(var->argv[0], var->environ);
-			if (var->dir == NULL)
-			{
-				*var->status = 127;
-				execve_error(var, ": not found\n");
-				head = head->next;
-				continue;
-			}
-			fork_child(var);
-			head = head->next;
-		}
+		semicolon_wrapper(var, head);
 	}
 	free_single_list_argv(current);
 	free(tmp2);

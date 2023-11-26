@@ -59,7 +59,10 @@ int check_semicolon(var_inf *var)
 		{
 			var->argv = head->argv;
 			if (check_builtin(var))
+			{
+				head = head->next;
 				continue;
+			}
 			var->dir = command_exist(var->argv[0], var->environ);
 			if (var->dir == NULL)
 			{
@@ -160,7 +163,7 @@ void arrange_argv(var_inf *var, char *delim)
 	{
 		if (check_delim(var->argv[i], delim))
 		{
-			if (_strlen(var->argv[i]) > 1)
+			if (_strlen(var->argv[i]) > _strlen(delim))
 			{
 				new_argv = malloc(sizeof(char *) * (argv_len + 2));
 				copy_list(var->argv, new_argv);
@@ -170,7 +173,7 @@ void arrange_argv(var_inf *var, char *delim)
 				argv_len += 2;
 				var->argv[i] = strtok(var->argv[i], delim);
 				shiftToRight(var->argv + i);
-				var->argv[++i] = ";";
+				var->argv[++i] = delim;
 				shiftToRight(var->argv + i);
 				var->argv[++i] = strtok(NULL, delim);
 			}

@@ -73,3 +73,95 @@ void print_list(char **argv)
 	}
 	printf("\nlength = %d\n", i + 1);
 }
+
+/**
+ * check_logical - checkc the logical AND && , OR ||
+ * @var: list of variables
+ *
+ * Return: 1 in success and 0 in failure
+ */
+
+int check_logical(var_inf *var)
+{
+	int i, logic;
+	list_t *head = NULL, *current;
+	char **tmp, **tmp2;
+
+	arrange_argv(var, "||");
+	arrange_argv(var, "&&");
+	tmp = var->argv, tmp2 = tmp;
+	for (i = 0; var->argv[i] != NULL; i++)
+	{
+		if (!_strcmp(var->argv[i], "&&"))
+		{
+			logic = 1;
+			var->argv[i] = NULL;
+			add_node_end_argv_int(&head, tmp, logic);
+			tmp = var->argv + i + 1;
+			continue;
+		}
+		if (!_strcmp(var->argv[i], "||"))
+		{
+			logic = 2;
+			var->argv[i] = NULL;
+			add_node_end_argv_int(&head, tmp, logic);
+			tmp = var->argv + i + 1;
+		}
+	}
+	if (head == NULL)
+	{
+		return (0);
+	}
+	else
+	{
+		current = head;
+		if (*tmp != NULL)
+			add_node_end_argv_int(&head, tmp, 0);
+		while (head != NULL)
+		{
+			logic = head->logic;
+			var->argv = head->argv;
+			if (check_builtin(var))
+			{
+				head = head->next;
+				continue;
+			}
+			var->dir = command_exist(var->argv[0], var->environ);
+			if (var->dir == NULL)
+			{
+				*var->status = 127;
+				execve_error(var, ": not found\n");
+				head = head->next;
+				if (*var->status && logic == 2)
+				{
+					continue;
+				}
+				else if (*var->status && logic == 1)
+				{
+					break;
+				}
+			}
+			fork_child(var);
+			head = head->next;
+			if (!*var->status && logic == 2)
+			{
+				break;
+			}
+			else if (!*var->status && logic == 1)
+			{
+				continue;
+			}
+			else if (*var->status && logic == 2)
+			{
+				continue;
+			}
+			else if (*var->status && logic == 1)
+			{
+				break;
+			}
+		}
+	}
+	free_single_list_argv(current);
+	free(tmp2);
+	return (1);
+}

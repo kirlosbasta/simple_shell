@@ -32,6 +32,8 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 		{
 			var.argv = create_list_of_arg(var.buf);
 			check_comment(var.argv);
+			if (check_logical(&var))
+				continue;
 			if (check_semicolon(&var))
 				continue;
 			if (check_builtin(&var))

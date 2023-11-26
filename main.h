@@ -16,6 +16,7 @@
  * struct list_t - Nodes for a singly linked list
  * @str: pointer to char
  * @argv: pointer to pointer to char
+ * @logic: int
  * @next: pointer to next node
  */
 
@@ -23,6 +24,7 @@ typedef struct list_t
 {
 	char *str;
 	char **argv;
+	int logic;
 	struct list_t *next;
 } list_t;
 
@@ -97,5 +99,7 @@ void shiftToRight(char **argv);
 void copy_list(char **old, char **new);
 void arrange_argv(var_inf *var, char *delim);
 void print_list(char **argv);
+list_t *add_node_end_argv_int(list_t **head, char **str, int logical);
+int check_logical(var_inf *var);
 
 #endif

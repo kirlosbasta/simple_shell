@@ -139,6 +139,8 @@ void free_single_list_argv(list_t *head)
 	while (head != NULL)
 	{
 		tmp = head;
+		if (head->argv != NULL)
+			free(head->argv);
 		head = head->next;
 		free(tmp);
 	}

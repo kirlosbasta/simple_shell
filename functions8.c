@@ -131,6 +131,7 @@ int check_logical(var_inf *var)
 			{
 				*var->status = 127;
 				execve_error(var, ": not found\n");
+				head->argv = NULL;
 				head = head->next;
 				if (*var->status && logic == 2)
 				{
@@ -142,6 +143,7 @@ int check_logical(var_inf *var)
 				}
 			}
 			fork_child(var);
+			head->argv = NULL;
 			head = head->next;
 			if (!*var->status && logic == 2)
 			{

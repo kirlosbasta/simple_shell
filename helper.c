@@ -56,6 +56,7 @@ int fork_child(var_inf *var)
 		if (var->dir != NULL)
 			free(var->dir);
 		var->dir = NULL;
+		var->argv = NULL;
 	}
 	return (0);
 }

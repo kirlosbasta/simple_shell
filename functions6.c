@@ -103,6 +103,10 @@ char *num_to_str(int num)
 	char *str = malloc(sizeof(char) * 6);
 	int i = 0;
 
+	if (num == 0)
+	{
+		str[i++] = '0';
+	}
 	while (num > 0)
 	{
 		str[i++] = (num % 10) + '0';

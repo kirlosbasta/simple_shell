@@ -13,6 +13,7 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 {
 	var_inf var;
 	int status = 0;
+	char *num_alloc = NULL;
 	size_t n = 0;
 
 	var.count = 0, var.status = &status;
@@ -23,6 +24,9 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 	{
 		var.count++;
 		var.argv = NULL;
+		if (num_alloc != NULL)
+			free(num_alloc);
+		num_alloc = NULL;
 		if (isatty(0))
 			write(STDOUT_FILENO, "$ ", 3);
 		var.read = getline(&var.buf, &n, stdin);
@@ -32,6 +36,7 @@ int main(UNUSED int ac, UNUSED char **av, char **environ)
 		{
 			var.argv = create_list_of_arg(var.buf);
 			check_comment(var.argv);
+			num_alloc = variable_repalcement(&var);
 			if (check_logical(&var))
 				continue;
 			if (check_semicolon(&var))

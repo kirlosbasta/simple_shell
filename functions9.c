@@ -46,3 +46,49 @@ list_t *add_node_end_argv_int(list_t **head, char **str, int logical)
 	current->next = node;
 	return (node);
 }
+
+/**
+ * variable_replacement - Handle the variables
+ * @var: list of variables
+ *
+ * Return: Nothingb
+ */
+
+char *variable_repalcement(var_inf *var)
+{
+	int i, idx;
+	pid_t parent;
+	char *num = NULL, *value;
+
+	for (i = 0; var->argv[i] != NULL; i++)
+	{
+		idx = check_delim(var->argv[i], "$");
+		if (var->argv[i][0] == '$' && var->argv[i][idx - 1] != '\\')
+		{
+			if (idx || var->argv[i][0] == '$')
+			{
+				value = _getenv(var->argv[i] + idx + 1, var->environ);
+				if (var->argv[i][idx + 1] == '?')
+				{
+					num = num_to_str(*var->status);
+					var->argv[i] = num;	
+				}
+				else if (var->argv[i][idx + 1] == '$')
+				{
+					parent = getpid();
+					num = num_to_str((int) parent);
+					var->argv[i] = num;	
+				}
+				else if (value != NULL)
+				{
+					var->argv[i] = value;
+				}
+				else
+				{
+					var->argv[i][idx] = '\0';
+				}
+			}
+		}
+	}
+	return (num);
+}

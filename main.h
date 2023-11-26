@@ -103,5 +103,6 @@ list_t *add_node_end_argv_int(list_t **head, char **str, int logical);
 int check_logical(var_inf *var);
 void semicolon_wrapper(var_inf *var, list_t *head);
 void logical_wrapper(var_inf *var, list_t *head);
+char *variable_repalcement(var_inf *var);
 
 #endif

@@ -39,7 +39,7 @@ int check_delim(char *s, char *delim)
 	{
 		if (s[i] == *delim)
 		{
-			return (1);
+			return (i);
 		}
 	}
 	return (0);
@@ -72,7 +72,7 @@ char **create_list_of_arg(char *buf)
 			argv = _realloc(argv, basic, sizeof(char *) * (10 + j));
 			j++;
 		}
-		if (check_delim(argv[i], "\n") == 1)
+		if (check_delim(argv[i], "\n"))
 		{
 			argv[i] = strtok(argv[i], "\n");
 
